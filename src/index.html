@@ -4,8 +4,98 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document</title>
+		<style>
+			#container,
+			.container {
+				border: 1px solid #000;
+				width: 400px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 16px;
+			}
+
+            form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            form #submit {
+                margin-top: 16px;
+            }
+
+			ul {
+				list-style: none;
+				counter-reset: counter;
+				margin: 0;
+				padding: 0;
+			}
+
+			ul li {
+				font-size: 24px;
+				font-family: sans-serif;
+			}
+
+			ul li:before {
+				counter-increment: counter;
+				content: counter(counter) ". ";
+			}
+
+			ul li.t:before {
+				color: green;
+			}
+
+			ul li.f:before {
+				color: red;
+			}
+
+			ul li.isHidden {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
+		<div id="container">
+			<ul>
+				<li class="t">True</li>
+				<li class="f">False</li>
+				<li class="t">True</li>
+				<li class="t">True</li>
+				<li class="f">False</li>
+			</ul>
+			<form>
+				<div>
+					<label for="select">Filter by: </label>
+					<select id="select">
+						<option value="True">True</option>
+						<option value="False">False</option>
+					</select>
+				</div>
 
+				<button type='submit' id="submit">Filter</button>
+			</form>
+		</div>
+		<script>
+			const button = document.querySelector("#submit");
+			const list = document.querySelector("ul");
+			const container = document.querySelector("#container");
+
+			button.addEventListener("click", (e) => {
+                e.preventDefault();
+				const div = document.createElement("div");
+                const secondList = list.cloneNode(true);
+                const selectValue = document.querySelector('form #select');
+				Array.from(secondList.children).forEach((e) => {
+					if (e.textContent !== selectValue.value) {
+						e.classList.add("isHidden");
+					}
+				});
+				div.appendChild(secondList);
+				div.classList.add("container");
+				document.body.appendChild(div);
+			});
+		</script>
 	</body>
 </html>
